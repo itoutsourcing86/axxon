@@ -6,6 +6,7 @@ import (
 	"database/sql"
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 
 	"google.golang.org/grpc/codes"
@@ -62,8 +63,10 @@ func (s *fetchServiceServer) Create(ctx context.Context, req *v1.CreateRequest) 
 		Timeout: time.Second * 5,
 	}
 
+	method := strings.ToUpper(req.Request.Method)
+
 	request, err := http.NewRequest(
-		req.Request.Method,
+		method,
 		req.Request.Address,
 		nil,
 	)
