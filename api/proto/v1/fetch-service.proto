@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package v1;
+
+import "google/api/annotations.proto";
+
+message Request {
+    int64 id = 1;
+    string method = 2;
+    string address = 3;
+    string headers = 4;
+    string body = 5;
+}
+
+message CreateRequest {
+    string api = 1;
+    Request request = 2;
+}
+
+message CreateResponse {
+    string api = 1;
+    int64 id = 2;
+    // string status = 3;
+    // string headers = 4;
+    // int64 length = 5;
+}
+
+message ReadAllRequest {
+    string api = 1;
+}
+
+message ReadAllResponse {
+    string api = 1;
+    repeated Request requests = 2;
+}
+
+message DeleteRequest {
+    string api = 1;
+    int64 id = 2;
+}
+
+message DeleteResponse {
+    string api = 1;
+    int64 deleted = 2;
+}
+
+service FetchService {
+    rpc Create (CreateRequest) returns (CreateResponse){
+        option (google.api.http) = {
+            post: "/v1/request/create",
+            body: "*"
+        };
+    }
+    rpc ReadAll (ReadAllRequest) returns (ReadAllResponse){
+        option (google.api.http) = {
+            get: "/v1/request/all"
+        };
+    }
+    rpc Delete (DeleteRequest) returns (DeleteResponse){
+        option (google.api.http) = {
+            delete: "/v1/request/{id}"
+        };
+    }
+}
