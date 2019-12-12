@@ -88,8 +88,10 @@ func (s *fetchServiceServer) Create(ctx context.Context, req *v1.CreateRequest) 
 	}
 
 	return &v1.CreateResponse{
-		Api: apiVersion,
-		Id:  id,
+		Api:    apiVersion,
+		Id:     id,
+		Status: int64(resp.StatusCode),
+		Length: resp.ContentLength,
 	}, nil
 }
 
